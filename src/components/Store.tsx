@@ -1,6 +1,9 @@
 import Link from "next/link";
 import { IoStarSharp } from "react-icons/io5";
-const Store = ({ details }) => {
+import { IoIosArrowForward } from "react-icons/io";
+import { StorePropTypes } from "@/types/store";
+
+const Store: React.FC<StorePropTypes> = ({ details }) => {
   const {
     name,
     averageRating,
@@ -28,7 +31,9 @@ const Store = ({ details }) => {
         {address}, {city}, {state}, {pincode}
       </p>
       <Link href={gmbMapUrl} target="_blank" rel="noopener noreferrer">
-        <button>GET DIRECTIONS {">"}</button>
+        <button>
+          GET DIRECTIONS <IoIosArrowForward />
+        </button>
       </Link>
     </div>
   );

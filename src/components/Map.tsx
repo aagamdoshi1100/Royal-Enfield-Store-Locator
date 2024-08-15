@@ -1,28 +1,14 @@
 "use client";
+import {
+  Coordinates,
+  GeolocationPositionErrorTypes,
+  MapProps,
+  Position,
+} from "@/types/map";
 import { Loader } from "@googlemaps/js-api-loader";
 import React, { useEffect, useRef, useState } from "react";
 
-interface Coordinates {
-  latitude: number;
-  longitude: number;
-  altitude?: number | null;
-  accuracy: number;
-  altitudeAccuracy?: number | null;
-  heading?: number | null;
-  speed?: number | null;
-}
-
-interface Position {
-  timestamp: number;
-  coords: Coordinates;
-}
-interface GeolocationPositionErrorTypes {
-  code: number;
-  message: string;
-}
-
-const Map = ({ mapMarkerData }) => {
-  console.log(mapMarkerData, "md");
+const Map: React.FC<MapProps> = ({ mapMarkerData }) => {
   const mapRef = useRef<HTMLDivElement>(null);
   const [locationDetails, setLocationDetails] = useState<Coordinates | null>(
     null
@@ -67,7 +53,7 @@ const Map = ({ mapMarkerData }) => {
           lng: parseFloat(mapMarkerData[0].longitude),
         },
         zoom: 11,
-        mapId: "MAPID", // replace with your map ID if needed
+        mapId: "MAPID",
       };
 
       const map = new Map(mapRef.current as HTMLDivElement, mapOptions);
@@ -81,28 +67,23 @@ const Map = ({ mapMarkerData }) => {
             <p style="margin: 5px 0 0; color: #555;">${markerData.address}</p>
           </div>
         `;
-        console.log(markerData, "markerdata");
         const marker = new AdvancedMarkerElement({
           map,
           position: {
             lat: parseFloat(markerData.latitude),
             lng: parseFloat(markerData.longitude),
           },
-          title: `
-             <h3 style="margin: 0; color: #333;">${markerData.name}</h3>
-            <p style="margin: 5px 0 0; color: #555;">${markerData.address}</p>
-            <p style="margin: 5px 0 0; color: #555;">${markerData.phoneNumber}</p>
-         `,
+          title: "",
           gmpClickable: true,
         });
-        marker.addListener("click", ({ domEvent, latLng }) => {
-          const { target } = domEvent;
-
+        marker.addListener("click", () => {
           infoWindow.close();
-          infoWindow.setContent(marker.title);
+          infoWindow.setContent(`
+            <h3 style="margin: 0; color: #333;">${markerData.name}</h3>
+           <p style="margin: 5px 0 0; color: #555;">${markerData.address}</p>
+           <p style="margin: 5px 0 0; color: #555;">${markerData.phoneNumber}</p>
+        `);
           infoWindow.open(marker.map, marker);
-          // Handle click event based on marker data
-          console.log(`Marker clicked: ${marker.title}`);
         });
       }
     };

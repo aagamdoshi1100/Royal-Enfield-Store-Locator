@@ -4,7 +4,7 @@ import { useForm } from "react-hook-form";
 import PreviewBox from "./PreviewBox";
 import { FormDataTypes } from "@/types/formTypes";
 
-function Form() {
+const Form: React.FC = () => {
   const [formData, setFormData] = useState({
     data: {
       email: "",
@@ -119,6 +119,6 @@ function Form() {
       )}
     </div>
   );
-}
+};
 
 export default Form;
