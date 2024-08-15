@@ -9,20 +9,39 @@ const StoreLocator = () => {
     defaultState: "Delhi",
     defaultCity: "New Delhi",
     fetchedDealerData: [],
+    loading: false,
   });
   useEffect(() => {
     const fetcher = async () => {
-      const dealers = await fetch(
-        `/api/getShowrooms?state=${selectedState.defaultState}`
-      );
-      const dealersData = await dealers.json();
-      setSelectedState({
-        ...selectedState,
-        fetchedDealerData: dealersData.data.cities,
-      });
+      try {
+        setSelectedState((prevState) => ({
+          ...prevState,
+          loading: true,
+        }));
+        const response = await fetch(
+          `/api/getShowrooms?state=${selectedState.defaultState}`
+        );
+        if (!response.ok) {
+          throw new Error("Failed to fetch data");
+        }
+        const dealersData = await response.json();
+        setSelectedState((prevState) => ({
+          ...prevState,
+          loading: false,
+          fetchedDealerData: dealersData.data.cities,
+        }));
+      } catch (error) {
+        setSelectedState((prevState) => ({
+          ...prevState,
+          loading: false,
+        }));
+        console.error("Error fetching data:", error);
+      }
     };
+
     fetcher();
   }, [selectedState.defaultState]);
+
   return (
     <div className="locator-main-component">
       <div className="store-locator-form">
@@ -59,15 +78,18 @@ const StoreLocator = () => {
                 })
               }
             >
-              <option>Select City</option>
-              {stateAndCities
-                .find((data) => data.state === selectedState.defaultState)
-                .cities.map((data) => (
-                  <option value={data} key={data}>
-                    {data}
-                  </option>
-                ))}
-              <option value="Chandigarh">Chandigarh</option>
+              {!selectedState.loading && (
+                <>
+                  <option>Select City</option>
+                  {stateAndCities
+                    .find((data) => data.state === selectedState.defaultState)
+                    .cities.map((data) => (
+                      <option value={data} key={data}>
+                        {data}
+                      </option>
+                    ))}
+                </>
+              )}
             </select>
           </div>
         </form>
