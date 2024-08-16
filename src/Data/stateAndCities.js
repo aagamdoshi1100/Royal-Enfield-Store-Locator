@@ -1,3 +1,8 @@
+export const delhiCoordinates = {
+  accuracy: 16.736,
+  latitude: 19.1933182,
+  longitude: 73.0914053,
+};
 export const stateAndCities = [
   {
     state: "Andaman And Nicobar Islands",

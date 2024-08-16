@@ -19,7 +19,6 @@
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-top: 20px;
 }
 .form-elements {
   border-radius: 5px;
@@ -30,7 +29,7 @@
   flex-direction: column;
   box-shadow: rgba(0, 0, 0, 0.05) 0px 0px 0px 1px,
     rgb(209, 213, 219) 0px 0px 0px 1px inset;
-  margin-bottom: 20px;
+  margin: 20px 0px;
 }
 
 label {
@@ -109,6 +108,7 @@ button:hover {
 }
 .store-locator-heading {
   font-size: 24px;
+  padding-top: 20px;
 }
 select {
   padding: 13px;
@@ -203,9 +203,12 @@ select {
     width: 40%;
   }
   .stores {
-    height: 500px;
+    height: calc(80vh - 25px);
     overflow-y: scroll;
     overflow-x: hidden;
+  }
+  .store-locator-form-elements {
+    height: 20vh;
   }
   .store-component {
     margin: 0px 2px;

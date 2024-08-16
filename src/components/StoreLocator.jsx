@@ -78,7 +78,9 @@ const StoreLocator = () => {
                 })
               }
             >
-              {!selectedState.loading && (
+              {selectedState.loading ? (
+                <option>Select City</option>
+              ) : (
                 <>
                   <option>Select City</option>
                   {stateAndCities
