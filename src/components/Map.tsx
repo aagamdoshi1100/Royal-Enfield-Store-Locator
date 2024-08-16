@@ -1,46 +1,12 @@
 "use client";
-import { delhiCoordinates } from "@/Data/stateAndCities";
-import {
-  Coordinates,
-  GeolocationPositionErrorTypes,
-  MapProps,
-  Position,
-} from "@/types/map";
+import { MapProps } from "@/types/map";
 import { Loader } from "@googlemaps/js-api-loader";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef } from "react";
 
 const Map: React.FC<MapProps> = ({ mapMarkerData }) => {
   const mapRef = useRef<HTMLDivElement>(null);
-  const [locationDetails, setLocationDetails] = useState<Coordinates | null>(
-    null
-  );
 
   useEffect(() => {
-    const onSuccess = (position: Position) => {
-      const { latitude, longitude } = position.coords;
-      setLocationDetails({
-        latitude,
-        longitude,
-        accuracy: position.coords.accuracy,
-      });
-    };
-
-    const onError = (error: GeolocationPositionErrorTypes) => {
-      setLocationDetails(delhiCoordinates);
-      console.log("Geolocation error:", error);
-    };
-
-    if (navigator.geolocation) {
-      navigator.geolocation.getCurrentPosition(onSuccess, onError);
-    } else {
-      setLocationDetails(delhiCoordinates);
-      console.log("Browser doesn't support Geolocation");
-    }
-  }, []);
-
-  useEffect(() => {
-    if (!locationDetails) return;
-
     const initializationMap = async () => {
       const loader = new Loader({
         apiKey: process.env.NEXT_PUBLIC_MAPS_API as string,
@@ -94,7 +60,7 @@ const Map: React.FC<MapProps> = ({ mapMarkerData }) => {
     };
 
     initializationMap();
-  }, [mapMarkerData, locationDetails]);
+  }, [mapMarkerData]);
 
   return <div className="map" ref={mapRef}></div>;
 };

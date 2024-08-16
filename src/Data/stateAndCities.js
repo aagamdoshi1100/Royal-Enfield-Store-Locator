@@ -1,7 +1,10 @@
 export const delhiCoordinates = {
+  defaultState: "Delhi",
+  defaultCity: "New Delhi",
   accuracy: 16.736,
   latitude: 19.1933182,
   longitude: 73.0914053,
+  isUserGeolocationApproved: false,
 };
 export const stateAndCities = [
   {
