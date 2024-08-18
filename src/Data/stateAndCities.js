@@ -8,6 +8,10 @@ export const delhiCoordinates = {
 };
 export const stateAndCities = [
   {
+    state: "Delhi",
+    cities: ["Daryaganj", "Delhi", "East Delhi", "New Delhi"],
+  },
+  {
     state: "Andaman And Nicobar Islands",
     cities: ["Port Blair"],
   },
@@ -203,10 +207,6 @@ export const stateAndCities = [
       "Rajnandgaon",
       "Surajpur",
     ],
-  },
-  {
-    state: "Delhi",
-    cities: ["Daryaganj", "Delhi", "East Delhi", "New Delhi"],
   },
   {
     state: "Goa",

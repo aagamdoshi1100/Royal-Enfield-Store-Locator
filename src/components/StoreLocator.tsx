@@ -4,6 +4,7 @@ import { delhiCoordinates, stateAndCities } from "@/Data/stateAndCities";
 import Store from "./Store";
 import Map from "./Map";
 import { GeolocationPositionErrorTypes, Position } from "@/types/map";
+import Loader from "./Loader";
 
 interface StateInterface {
   defaultState: string;
@@ -12,7 +13,7 @@ interface StateInterface {
   latitude?: number;
   longitude?: number;
   fetchedDealerData: {
-    [key: string]: any[]; // Replace `any[]` with the correct type if known
+    [key: string]: any[];
   };
   loading: boolean;
   isUserGeolocationApproved: boolean;
@@ -35,6 +36,9 @@ const StoreLocator = () => {
   };
 
   useEffect(() => {
+    handleStateUpdates({
+      loading: true,
+    });
     const onSuccess = async (position: Position) => {
       const { latitude, longitude, accuracy } = position.coords;
       try {
@@ -79,21 +83,20 @@ const StoreLocator = () => {
     if (navigator.geolocation) {
       navigator.geolocation.getCurrentPosition(onSuccess, onError);
     } else {
-      handleStateUpdates(delhiCoordinates);
+      handleStateUpdates({
+        ...delhiCoordinates,
+        loading: false,
+      });
       console.error("Browser doesn't support Geolocation");
     }
   }, []);
 
   useEffect(() => {
     if (!selectedState.defaultState) {
-      console.log("defaultState is not set yet");
       return;
     }
     const fetcher = async () => {
       try {
-        handleStateUpdates({
-          loading: true,
-        });
         const response = await fetch(
           `/api/getShowrooms?state=${selectedState.defaultState}`
         );
@@ -185,6 +188,7 @@ const StoreLocator = () => {
           }
         />
       </div>
+      {selectedState.loading && <Loader />}
     </div>
   );
 };
